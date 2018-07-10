@@ -1,0 +1,87 @@
+2018/7/10
+
+Linus花了两周时间自己用C写了一个分布式版本控制系统
+
+git的主要功能：分布式版本控制系统
+概念
+Working Directory:工作区，即电脑里能看到的目录
+repository：版本库又名仓库，可以简单理解成一个目录
+stage：暂存区
+commit_id：提交记录
+install https://gitforwindows.org/
+
+******************************
+创建库：
+	 确定库的位置 cd D:\gitLearning
+	 1 初始化库 git init 
+	 手动创建一个文件
+文件添加到库
+	 git add -A 
+	 或者
+	 git add filename1 
+	 git add filename2//可以多次添加
+	 git commit -m "add 3 file"// 添加完以后提交  -m后面输入的是本次提交的说明
+	遇到错误  
+	Please tell me who you are，
+	unable to auto-detect email address (got 'tsing@tsing.(none)')。
+	原因：是因为在创建git文件夹的时候信息不完善导致的
+	4 git config user.name "tsing"
+	5 git config user.email "tsing@tsing.com"
+文件的修改
+	手动修改文件后，再使用add commit 添加修改即可
+	git add -A 
+	git commit -m "message"
+	
+	git diff //workdirect&stage文件的比较
+	git diff --cached    #是暂存区(stage)&分支(master)的比较
+	
+*****************************************
+文件的时空穿梭
+	HEAD指向的版本就是当前版本，因此，Git允许我们在版本的历史之间穿梭，使用命令git reset --hard commit_id。
+	git log//穿梭前，用git log可以查看提交历史，以便确定要回退到哪个版本。
+	git reset --hard commit_id//穿梭到commit_id时代
+	要重返未来，用git reflog查看命令历史，以便确定要回到未来的哪个版本。
+	git checkout -- readme.txt //回退到最后一次add或者commit的状态
+	
+*******************************以上为本地版本控制************************
+*************************************************************************
+git与github
+git是一个版本管理工具，是可以在你电脑不联网的情况下，只在本地使用的一个版本管理工具
+github是一个网站，程序员可以在github上建立一个网上的仓库，他每次提交的时候可以把代码提交到网上，这样每次提交，别人也都可以看到他的代码，同时别人也可以帮他修改代码，这种开源的方式非常方便程序员之间的交流和学习
+
+注册github账号
+	tsing10@126.com	123456as
+	新建仓库，名字：gitlearn
+	SSH加密
+		创建SSH Key
+		ssh-keygen -t rsa -C "tsing10@126.com"   放在D:/git目录下
+	将ssh公钥添加到仓库
+	本地仓库 关联 GitHub仓库
+		git remote add origin git@github.com:tsing10/gitlearn.git //远程库的名字就是origin,
+		出现错误：
+		Host key verification failed.
+		fatal: Could not read from remote repository.
+		检查name和email是否配置正确
+		git config --global user.name
+		git config --global user.email
+		修改完用户名也不对；于是使用另一种配置远程的方式：https协议
+**	git remote add origin https://github.com/tsing10/gitlearn.git  //成功
+	git remote remove origin //删除远程连接
+	
+	本地库的所有内容推送到远程库
+	git push -u origin master
+	
+	远程库克隆岛本地库
+	git clone https://github.com/tsing10/gitlearn.git
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

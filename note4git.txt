@@ -74,7 +74,7 @@ github是一个网站，程序员可以在github上建立一个网上的仓库�
 	远程库克隆岛本地库
 	git clone https://github.com/tsing10/gitlearn.git
 
-	
+	change
 	
 	
 	

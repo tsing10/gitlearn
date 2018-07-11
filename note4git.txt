@@ -74,7 +74,28 @@ github是一个网站，程序员可以在github上建立一个网上的仓库�
 	远程库克隆岛本地库
 	git clone https://github.com/tsing10/gitlearn.git
 
+2018/7/11
+
+分支操作
+	创建分支：
+	git branch dev
+	切换分支：
+	git checkout dev
+	创建+切换分支：
+	git checkout -b <name>
+	查看当前的所有分支：
+	git branch
+	......dev下的 操作 与master 下的操作是并列的 没有影响
+	git merge dev //dev成果合并到master
+	删除分支：
+	git branch -d dev
+	合并有时会有冲突
+	git branch fea
+	git checkout fea
 	
+	
+
+
 	
 	
 	

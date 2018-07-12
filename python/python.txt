@@ -1,0 +1,32 @@
+了解： 
+	python框架，如：flask，tornado，django
+	推荐算法
+	HBase
+	
+	
+************************flask***********************
+
+安装flask
+	教程网址 https://www.2cto.com/kf/201806/754008.html
+	进入cmd
+	pip 检查是否安装
+	pip install virtualenv //virtualenv 安装
+	新建文件夹并cd进入目录
+	virtualenv flask-env//安装flask环境
+	使用cd命令依次进入flask-env\Scripts\
+
+	activate//激活虚拟
+	deactivate//退出虚拟环境
+
+	pip install flask//安装flask  失败了三次 最后才成功 可能网速不好
+	检验安装成功？
+	python//进入python
+	print(flask.__version__)//输出版本号 1.0.2 wuwuwu
+	
+	
+其 WSGI 工具箱采用 Werkzeug ，模板引擎则使用 Jinja2（类似于J2ee的Freemarker） 。Flask使用 BSD 授权（非常自由的开源代码协议）。
+	
+	错误1：引入render_template模板：jinja2.exceptions.TemplateNotFound
+	解决：templates文件夹放错位置，templates文件夹和运行文件位于同一级。
+	错误2：Flask 使用消息闪烁（flash）报错：The session is unavailable because no secret key was set	
+	解决：重新设定一个SECRET_KEY，app.config['SECRET_KEY'] = '123456'

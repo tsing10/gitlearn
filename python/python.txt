@@ -23,10 +23,24 @@
 	python//进入python
 	print(flask.__version__)//输出版本号 1.0.2 wuwuwu
 	
-	
-其 WSGI 工具箱采用 Werkzeug ，模板引擎则使用 Jinja2（类似于J2ee的Freemarker） 。Flask使用 BSD 授权（非常自由的开源代码协议）。
-	
+flask-小试牛刀
+	网址 https://blog.csdn.net/zhao_zi_ming_lc/article/details/78502322
+	其 WSGI 工具箱采用 Werkzeug ，模板引擎则使用 Jinja2（类似于J2ee的Freemarker） 。Flask使用 BSD 授权（非常自由的开源代码协议）。
+**	flask框架：更新网页内容，无需重启服务
+**	pycharm有时显示导入错误 ，那是pycharm找不到，不一定是导入错误，忽略
 	错误1：引入render_template模板：jinja2.exceptions.TemplateNotFound
 	解决：templates文件夹放错位置，templates文件夹和运行文件位于同一级。
 	错误2：Flask 使用消息闪烁（flash）报错：The session is unavailable because no secret key was set	
 	解决：重新设定一个SECRET_KEY，app.config['SECRET_KEY'] = '123456'
+	
+botstrap：html css js 框架
+安装 pip install flask-bootstrap
+
+学习了一天MongoDB
+
+pymongo方式连接mongo
+安装pymongo
+	pip install pymongo//一直失败 ，网速可以，就是read timeout fff
+	pip install pymongo -i http://pypi.douban.com/simple/ --trusted-host pypi.douban.com //换源 成功 哈哈
+	
+

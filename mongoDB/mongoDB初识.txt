@@ -1,0 +1,120 @@
+2018/7/13
+
+教程网址 http://www.runoob.com/mongodb/mongodb-create-database.html
+NoSQL 简史
+	NoSQL一词最早出现于1998年
+	NoSQL最普遍的解释是"非关联型的"，强调Key-Value Stores和文档数据库的优点，而不是单纯的反对RDBMS
+	CAP定理（CAP theorem）
+		一个分布式系统不可能同时很好的满足一致性，可用性和分区容错性这三个需求，最多只能同时较好的满足两个。
+		一致性(Consistency) (所有节点在同一时间具有相同的数据)
+		可用性(Availability) (保证每个请求不管成功或者失败都有响应)
+		分隔容忍(Partition tolerance) (系统中任意信息的丢失或失败不会影响系统的继续运作)
+	MongoDB HBase Redis都是CP型	
+	
+MongoDB 是由 C++语言 编写的，是一个基于  分布式文件存储 的 开源 数据库系统。
+	旨在为WEB应用提供可扩展的高性能数据存储解决方案
+	将数据存储为一个文档，数据结构由键值(key=>value)对组成，字段值可以包含其他文档，数组及文档数组
+	支持各种编程语言:RUBY，PYTHON，JAVA，C++，PHP，C#等多种语言
+	Map/reduce主要是用来对数据进行批量处理和聚合操作
+概念
+
+	SQL术语/概念	MongoDB术语/概念	解释/说明
+	database		database			数据库
+	table			collection			数据库表/集合
+	row				document			数据记录行/文档
+	column			field				数据字段/域
+	index			index				索引
+	table joins	 						表连接,MongoDB不支持
+	primary key		primary key			主键,MongoDB自动将_id字段设置为主键	
+	默认端口 27017
+	
+安装
+	地址 https://www.mongodb.com/download-center#community
+	安装 next 更改安装地址为D:/program
+	将bin加入path
+	mongod --dbpath D:\Program Files\MongoDB\Server\4.0\data //安装mongodb服务
+**	mongod //启动服务
+**	mongod.exe --remove//移除服务
+**	mongo //连接服务
+
+	mongod.exe --config "C:\mongodb\mongod.cfg" --install //修改过mongod.cfg的话，该语句使其修改生效
+DB	
+	use runoob //创建DB
+	db.dropDatabase()// 删除当前的DB及其内容
+	show dbs //显示所有DBs
+	db //显示当前DB
+collection
+	db.runoob.insert({"name":"菜鸟教程"})//向名为runoob的集合插入内容，如没有runoob集合，自动创建
+	db.createCollection("runoob") //创建空集合runoob
+	show collections //查看现有集合
+	db.runoob.drop() //删除集合runoob
+document
+	类似json
+	将键值对定为变量
+	document=({title: 'MongoDB 教程', 
+    description: 'MongoDB 是一个 Nosql 数据库',
+    by: '菜鸟教程',
+    url: 'http://www.runoob.com',
+    tags: ['mongodb', 'database', 'NoSQL'],
+    likes: 100
+});
+插入doc
+	db.col.insert(document)
+更新doc	
+	db.col.update({'title':'MongoDB 教程'},{$set:{'title':'MongoDB'}}) //更新col的title ，更新符合条件的第一个doc
+	db.col.update({'title':'MongoDB 教程'},{$set:{'title':'MongoDB'}},{multi:true}) //更新col的title ，更新全部符合条件的doc
+	db.col.save(document) //替换为新的，document中须写明被替换的_id
+删除doc	
+	de.col.remove({}) //删除集合col的所有doc
+	del.col.remove({'title':'MongoDB 教程'}) //删除符合条件的第一条doc
+	del.col.remove({'title':'MongoDB 教程'}) //删除符合条件的所有doc
+
+查询
+	and
+	db.col.find({key1:value1, key2:value2}).pretty()//每个‘，’相当于and
+	or
+	db.col.find(
+   {
+      $or: [
+         {key1: value1}, {key2:value2}
+      ]
+   }
+	).pretty() // or
+	and和or同时用，仅需条件之间加 ‘，’，就是把or看成and的一部分
+	条件查询
+	(>)	 	大于 	$gt
+	(<) 	小于 	$lt
+	(>=)  大于等于	gte
+	(<=)  小于等于 	$lte
+	(!=)	不等于	$ne
+	(=)		等于	$eq
+查询结果显示
+	db.COLLECTION_NAME.find().limit(NUMBER)//最多显示NUMBER个doc
+	db.COLLECTION_NAME.find().limit(NUMBER).skip(NUMBER2) //最多显示NUMBER个doc并跳过前NUMBER2个doc不予显示
+	db.COLLECTION_NAME.find().sort({KEY:1})//1为升序 -1为降序
+索引
+	db.col.createIndex({"title":1,"description":-1},{background: true}) //title键 升序； description键降序 background后台 建立索引
+	
+分片技术是核心，但是单个机器不好实现................
+
+2018/7/14
+关系
+	文档可以有嵌入和引用关系
+	嵌入：
+		将A文档内容全部写入B中
+		查询简单
+		如果用户和用户地址在不断增加，数据量不断变大，会影响读写性能
+	引用关系
+		将A的ID写入B文档中
+		查询需要2句
+		1 var result = db.users.findOne({"name":"Tom Benzamin"},{"address_ids":1})//A中找到ID
+		2 var addresses = db.address.find({"_id":{"$in":result["address_ids"]}})//B中找结果
+		
+db.posts.mapReduce(
+    function(){emit(this.user_name,1);},
+	fuction(key,value){
+		query:{status:"active"},
+		out:"post_total"
+	}
+		
+	

@@ -1,0 +1,16 @@
+解决代码冲突：rebase 和merge的区别，pull和fetch的区别
+	merge ：忠于历史
+	git merge **;vim **;git add **;git commit ** ;
+	rebase ：修改历史，使其更容易理解
+	git rebase **;vim **;git rebase --contine;
+
+git pull和git fetch
+	git pull：相当于是从远程获取最新版本并merge到本地  == fetch+merge
+	1 $ git fetch  	2 $ git merge 
+git reset和 Gitrebase
+	（1）：git reset –mixed：此为默认方式，不带任何参数的git reset，即时这种方式，它回退到某个版本，只保留源码，回退commit和index信息
+
+	（2）：git reset –soft：回退到某个版本，只回退了commit的信息，不会恢复到index file一级。如果还要提交，直接commit即可
+
+	（3）：git reset –hard：彻底回退到某个版本，本地的源码也会变为上一个版本的内容（这个要特别注意，因为本地代码会修改）
+	

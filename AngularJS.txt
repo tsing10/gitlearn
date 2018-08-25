@@ -1,0 +1,6 @@
+AngularJS 是一个 JavaScript 框架。它可通过 <script> 标签添加到 HTML 页面。
+AngularJS 通过 指令 扩展了 HTML，且通过 表达式 绑定数据到 HTML。
+
+使得开发现代的单一页面应用程序（SPAs：Single Page Applications）变得更加容易。
+
+内容多单简单 适合现用现看 不再深入学习

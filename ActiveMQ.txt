@@ -1,0 +1,12 @@
+2018/7/22 
+下载 
+解压到文件夹 
+运行bat文件 
+浏览器访问页面 出现即为安装成功
+
+myeclipse试运行
+新建eja工程demo（普通java工程无jms）
+导入activemq的jar包
+建立product和consumer类  p2p
+依次运行 console出现相关结果 即为成功
+还有pub/sub 模式 同上 均成功

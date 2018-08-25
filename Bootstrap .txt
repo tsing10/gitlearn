@@ -1,0 +1,8 @@
+2018/7/21
+Bootstrap 是一个用于快速开发 Web 应用程序和网站的前端框架。
+Bootstrap 是基于 HTML、CSS、JAVASCRIPT 的。
+发明者：Twitter 的 Mark Otto 和 Jacob Thornton 开发
+
+CDN是Content Delivery Network的缩写，简单的说就是Bootstrap把自己的css、Js等文件托管到某一个网络服务器上使用时调用。如果与Internet不通无法使用CDN加速，可将文件下载到本地引用。
+
+**	可学的东西极多，不易记忆，基础好的话 直接看文档 现学现用即可，不再学习

@@ -1,0 +1,17 @@
+2018/7/26
+
+引入2个jar包 
+连接mysql的和自身的
+
+完成了curd和多表查询
+
+2018/7/27
+自动生成javabean
+1 将3个需要放入根目录 （与src同目录）
+	这些jar不需要自己下载，maven工程的pom.xml配置好以后会自动下载。
+2 新建并配置generatorConfig.xml（与src同目录）
+	前提：数据库的表建好
+3 根目录下（与src同目录） cmd命令	
+	java -jar mybatis-generator-core-1.3.7.jar -configfile generatorConfig.xml -overwrite
+
+	

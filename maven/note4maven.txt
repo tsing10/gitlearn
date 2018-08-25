@@ -1,0 +1,14 @@
+下载mvn http://maven.apache.org/ 
+解压到D:\Workspaces\apache-maven-3.5.4
+配置环境变量
+	新建变量：MAVEN_HOME “D:\Workspaces\apache-maven-3.5.4”
+	追加path：%MAVEN_HOME%\bin
+dos下：mvn -version //显示版本即为成功
+修改数据仓库地址 conf/setting.xml
+	
+			
+修改myeclipse的maven的仓库地址 
+
+mvn命令行创建ssm工程：
+	mvn archetype:generate -DgroupId=org.ssm.dufy -DartifactId=ssm-demo -DarchetypeArtifactId=maven-archetype-webapp -DinteractiveMode=false
+	

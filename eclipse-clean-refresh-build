@@ -1,0 +1,32 @@
+maven
+
+1、maven clean 是清除target目录下的之前打好的jar包或者是war包；
+
+2、maven build是重新对该maven项目进行打包
+
+3  maven install是对上面两个命令的集合
+
+
+maven在执行一个生命周期的命令的是时候将会执行之前的所有生命周期操作，比如执行mvn install，会执行前面一系列的动作包括 compile , package , test 等
+
+平时可以用mvn install，而不进行clean节省时间（如果你觉得节省时间多的话），但最保险还是用 mvn clean install 生成最新的jar包或其他包
+
+******************************
+project
+
+eclipse  --->project  ----->clean选项将工程中的.class文件删除，同时重新编译工程
+
+Clean removes all compiled classes and forces recompilation of the entire project (or workspace depending on what you select to be cleaned).
+
+eclipse refresh:Refresh rereads the sourcefiles to see if there are changes made outside Eclipse.
+
+***********************************
+tomcat 
+
+redeploy 是指把 web 重新部署到 tomcat
+
+publish：就是把自己的web应用发布到tomcat服务器上没这样才能通过浏览器查看浏览
+
+clean： 就是先清除掉原先编译到tomcat上的程序（多个.class文件），之后再发布。
+
+

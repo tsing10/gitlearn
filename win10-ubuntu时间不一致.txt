@@ -1,0 +1,16 @@
+1 sudo apt-get install ntpdate
+
+2 sudo ntpdate time.windows.com   //不推荐，容易引发系统错误
+
+  2虽然出错了，但是3没出错，最终成功了
+
+3 sudo hwclock --localtime --systohc
+
+
+**************ntp 与 ntpdate
+1、ntpd同步时间是通过外网同步的，它是递归修改时间，一点点校准时间
+2、ntpdate时间同步是修改时间，卡，一下子就修改过来了，根本不给你反应的时间
+3、中国国家授时中心：210.72.145.44
+NTP服务器(上海) ：ntp.api.bz
+4、写完定时任务，配置好后，如果是客户端同步，不需要开启ntpd服务
+如果是要作为NTP服务端的话需要开启ntpd服务

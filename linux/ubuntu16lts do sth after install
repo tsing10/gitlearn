@@ -1,0 +1,158 @@
+系统：
+ $ cat /etc/issue
+ Ubuntu 16.04.5 LTS \n \l
+ $ uname -m
+ x86_64
+
+
+安装的时候语言选择中文，系统就会自动加载中文支持，并且可以直接使用中文输入法，不需要手动设置了
+
+修改双系统的默认启动顺序
+	1、编辑grub文件
+	# vim /etc/default/grub
+	将GRUB_DEFAULT=0 改为启动菜单中windows的顺序-1
+	2、使grub文件的改动生效
+	# update-grub
+
+
+ $ sudo apt-get update
+
+E: Problem executing scripts APT::Update::Post-Invoke-Success 'if /usr/bin/test -w /var/cache/app-info -a -e /usr/bin/appstreamcli; then appstreamcli refresh > /dev/null; fi'
+
+解决办法：
+https://www.cnblogs.com/Stone-Blossom/p/8626383.html
+依次执行
+
+ $ sudo pkill -KILL appstreamcli
+
+ $vwget -P /tmp https://launchpad.net/ubuntu/+archive/primary/+files/appstream_0.9.4-1ubuntu1_amd64.deb https://launchpad.net/ubuntu/+archive/primary/+files/libappstream3_0.9.4-1ubuntu1_amd64.deb
+
+ $ sudo dpkg -i /tmp/appstream_0.9.4-1ubuntu1_amd64.deb /tmp/libappstream3_0.9.4-1ubuntu1_amd64.deb
+
+ $ sudo apt-get upgrade //先update在upgrade
+
+Ubuntu16.04 开机出现检测到系统程序出现问题
+$ sudo vim /etc/default/apport 把1改成0
+
+安装视频播放器：系统自带的播放器有许多格式不支持，还是使用smplayer比较好
+ $ sudo apt-add-repository ppa:rvm/smplayer
+ $ sudo apt update
+ $ sudo apt install smplayer smplayer-skins smplayer-themes
+
+		一、安装hadoop并配置伪分布式教程
+ https://www.cnblogs.com/87hbteo/p/7606012.html
+出现了一下错误
+ 1、当向～/.bashrc中写入hadoop环境变量后，退出并vim后提示错误
+  No protocol specified
+  原因：添加的用户对$XAUTHORITY文件的读取权限导致的
+  $ ls -l $XAUTHORITY
+  -rw------- 1 wolf wolf 51  2月 24 15:19 /var/run/gdm3/auth-for-wolf-3Bc4J9/database
+  解决：增加该用户(干脆点all)对$XAUTHORITY的读取权限即可
+  $ chmod +rw $XAUTHORITY
+  $ ls -l $XAUTHORITY
+  -rw-r--r-- 1 wolf wolf 51  2月 24 15:19 /var/run/gdm3/auth-for-wolf-3Bc4J9/database
+ 2、没有namenode
+ $ jps
+ 3616 SecondaryNameNode
+ 5330 Jps
+ 3423 DataNode
+ 查看namenode日志文件
+ $ vim logs/hadoop-hadoop-namenode-tsing-QTJ5.log 
+ 2018-12-07 16:49:44,175 WARN org.apache.hadoop.hdfs.server.namenode.FSNamesystem: Encountered exception loading fsimage
+org.apache.hadoop.hdfs.server.common.InconsistentFSStateException: Directory /usr/local/hadoop/tmp/dfs/name is in an inconsistent state: storage directory does not exist or is not accessible.
+        at org.apache.hadoop.hdfs.server.namenode.FSImage.recoverStorageDirs(FSImage.java:322)
+        at org.apache.hadoop.hdfs.server.namenode.FSImage.recoverTransitionRead(FSImage.java:210)
+        at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.loadFSImage(FSNamesystem.java:1012)
+        at org.apache.hadoop.hdfs.server.namenode.FSNamesystem.loadFromDisk(FSNamesystem.java:691)
+        at org.apache.hadoop.hdfs.server.namenode.NameNode.loadNamesystem(NameNode.java:634)
+        at org.apache.hadoop.hdfs.server.namenode.NameNode.initialize(NameNode.java:695)
+        at org.apache.hadoop.hdfs.server.namenode.NameNode.<init>(NameNode.java:898)
+        at org.apache.hadoop.hdfs.server.namenode.NameNode.<init>(NameNode.java:877)
+        at org.apache.hadoop.hdfs.server.namenode.NameNode.createNameNode(NameNode.java:1603)
+        at org.apache.hadoop.hdfs.server.namenode.NameNode.main(NameNode.java:1671)
+2018-12-07 16:49:44,178 INFO org.mortbay.log: Stopped HttpServer2$SelectChannelConnectorWithSafeStartup@0.0.0.0:50070
+2018-12-07 16:49:44,278 INFO org.apache.hadoop.metrics2.impl.MetricsSystemImpl: Stopping NameNode metrics system...
+2018-12-07 16:49:44,279 INFO org.apache.hadoop.metrics2.impl.MetricsSystemImpl: NameNode metrics system stopped.
+2018-12-07 16:49:44,279 INFO org.apache.hadoop.metrics2.impl.MetricsSystemImpl: NameNode metrics system shutdown complete.
+ 原因分析：
+ 1、配置文件：重新看了一遍3个配置文件，确认无误
+ 2、
+进行namenode格式化的时候没有登录ssh
+			二、运行第一个hadoop实例--失败
+教程地址： https://blog.csdn.net/u012366219/article/details/78781382
+
+错误1、
+ $ hadoop fs -mkdir /input
+18/12/07 18:15:58 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+googe方案：
+1.执行：$ export HADOOP_ROOT_LOGGER=DEBUG,console
+2.执行：$ hadoop fs -mkdir /input
+查看具体的错误信息：
+
+17/03/16 11:35:47 DEBUG util.Shell: setsid exited with exit code 0
+17/03/16 11:35:47 DEBUG conf.Configuration: parsing URL jar:file:/usr/local/hadoop/share/hadoop/common/hadoop-common-2.7.1.jar!/core-default.xml
+17/03/16 11:35:47 DEBUG conf.Configuration: parsing input stream sun.net.www.protocol.jar.JarURLConnection$JarURLInputStream@462ac22a
+17/03/16 11:35:47 DEBUG conf.Configuration: parsing URL file:/usr/local/hadoop/etc/hadoop/core-site.xml
+17/03/16 11:35:47 DEBUG conf.Configuration: parsing input stream java.io.BufferedInputStream@405a2273
+17/03/16 11:35:48 DEBUG lib.MutableMetricsFactory: field org.apache.hadoop.metrics2.lib.MutableRate org.apache.hadoop.security.UserGroupInformation$UgiMetrics.loginSuccess with annotation @org.apache.eName=Time, value=[Rate of successful kerberos logins and latency (milliseconds)], about=, always=false, type=DEFAULT, sampleName=Ops)
+17/03/16 11:35:48 DEBUG lib.MutableMetricsFactory: field org.apache.hadoop.metrics2.lib.MutableRate org.apache.hadoop.security.UserGroupInformation$UgiMetrics.loginFailure with annotation @org.apache.eName=Time, value=[Rate of failed kerberos logins and latency (milliseconds)], about=, always=false, type=DEFAULT, sampleName=Ops)
+17/03/16 11:35:48 DEBUG lib.MutableMetricsFactory: field org.apache.hadoop.metrics2.lib.MutableRate org.apache.hadoop.security.UserGroupInformation$UgiMetrics.getGroups with annotation @org.apache.hadme=Time, value=[GetGroups], about=, always=false, type=DEFAULT, sampleName=Ops)
+17/03/16 11:35:48 DEBUG impl.MetricsSystemImpl: UgiMetrics, User and group related metrics
+17/03/16 11:35:48 DEBUG util.KerberosName: Kerberos krb5 configuration not found, setting default realm to empty
+17/03/16 11:35:48 DEBUG security.Groups:  Creating new Groups object
+17/03/16 11:35:48 DEBUG util.NativeCodeLoader: Trying to load the custom-built native-hadoop library...
+17/03/16 11:35:48 DEBUG util.NativeCodeLoader: Failed to load native-hadoop with error: java.lang.UnsatisfiedLinkError: no hadoop in java.library.path
+17/03/16 11:35:48 DEBUG util.NativeCodeLoader: java.library.path=/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib
+17/03/16 11:35:48 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+17/03/16 11:35:48 DEBUG util.PerformanceAdvisory: Falling back to shell based
+17/03/16 11:35:48 DEBUG security.JniBasedUnixGroupsMappingWithFallback: Group mapping impl=org.apache.hadoop.security.ShellBasedUnixGroupsMapping
+17/03/16 11:35:48 DEBUG security.Groups: Group mapping impl=org.apache.hadoop.security.JniBasedUnixGroupsMappingWithFallback; cacheTimeout=300000; warningDeltaMs=5000
+17/03/16 11:35:48 DEBUG security.UserGroupInformation: hadoop login
+17/03/16 11:35:48 DEBUG security.UserGroupInformation: hadoop login commit
+17/03/16 11:35:48 DEBUG security.UserGroupInformation: using local user:UnixPrincipal: hadoop
+17/03/16 11:35:48 DEBUG security.UserGroupInformation: Using user: "UnixPrincipal: hadoop" with name hadoop
+17/03/16 11:35:48 DEBUG security.UserGroupInformation: User entry: "hadoop"
+17/03/16 11:35:48 DEBUG security.UserGroupInformation: UGI loginUser:hadoop (auth:SIMPLE)
+
+其中有个warn信息，在这个信息附近找到一个：Failed to load native-hadoop with error: java.lang.UnsatisfiedLinkError，这表明是java.library.path出了问题，
+
+解决方案是在文件hadoop-env.sh中增加：
+
+export HADOOP_OPTS="-Djava.library.path=${HADOOP_HOME}/lib/native"  
+又出现后续错误：
+Exception in thread "main" java.lang.RuntimeException: core-site.xml not found
+	at org.apache.hadoop.conf.Configuration.loadResource(Configuration.java:2617)
+	at org.apache.hadoop.conf.Configuration.loadResources(Configuration.java:2543)
+	at org.apache.hadoop.conf.Configuration.getProps(Configuration.java:2426)
+	at org.apache.hadoop.conf.Configuration.set(Configuration.java:1151)
+	at org.apache.hadoop.conf.Configuration.set(Configuration.java:1123)
+	at org.apache.hadoop.conf.Configuration.setBoolean(Configuration.java:1459)
+	at org.apache.hadoop.util.GenericOptionsParser.processGeneralOptions(GenericOptionsParser.java:322)
+	at org.apache.hadoop.util.GenericOptionsParser.parseGeneralOptions(GenericOptionsParser.java:488)
+	at org.apache.hadoop.util.GenericOptionsParser.<init>(GenericOptionsParser.java:170)
+	at org.apache.hadoop.util.GenericOptionsParser.<init>(GenericOptionsParser.java:153)
+	at org.apache.hadoop.util.ToolRunner.run(ToolRunner.java:70)
+	at org.apache.hadoop.util.ToolRunner.run(ToolRunner.java:90)
+	at org.apache.hadoop.fs.FsShell.main(FsShell.java:378)
+
+解决办法：修改hadoop-env.sh中的HADOOP_CONF_DIR为hadoop配置文件的实际地址
+$ vim /usr/local/hadoop/etc/hadoop/hadoop-env.sh
+注释掉原有的HADOOP_CONF_DIR，改为
+export HADOOP_CONF_DIR=/usr/local/hadoop/etc/hadoop/
+
+--没有提供text.txt文件，不再使用该教程
+
+		三、运行第一个hadoop实例
+
+
+
+
+
+
+
+
+
+
+
+
+

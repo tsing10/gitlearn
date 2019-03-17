@@ -1,0 +1,79 @@
+
+cmd登录数据库
+mysql -uroot -p;
+
+显示所有数据库
+show databases;
+
+选中数据库
+use world;
+
+显示所有该数据库的表
+show tables;
+
+创建数据库 名为ysq
+create database ysq;
+
+
+
+导入txt
+
+++++++++++person.txt+++++++++++
+张三	北京	3000
+李四	杭州	4000
+王五	/N	4500
+小明	天津	/N
+++++++++++++++++++++++++++++++++
+
+1 根据待导入数据创建表
+
+
+    create table person(  
+    id int not null auto_increment,  
+    name varchar(40) not null,  
+    city varchar(20),  
+    salary int,  
+    primary key(id)  
+    )engine=innodb charset=gb2312;   
+
+2 命令行导入
+ 方式一：在mysql界面 
+ 
+mysql> load data local infile 'D:/git/mysql/person.txt' into table person(name,city,salary);
+ERROR 1148 (42000): The used command is not allowed with this MySQL version
+这是因为：
+服务器端，local_infile默认开启；客户端，local_infile默认关闭，因此用的时候需要打开。
+ 打开方法一
+ mysql --local-infile=1 -u root -p 以打开local-infile的方式登录 成功导入
+ 打开方法二
+ mysql> set global local_infile = 'ON';  导入失败
+ 打开方法三
+ 
+ 
+
+ 方式二：在cmd界面
+
+ C:\Users\tsing>mysql -uroot -p123456 ysq --local-infile=1 -e "LOAD DATA LOCAL INFILE 'D:/git/mysql/person.txt' into table person(name,city,salary)";
+
+3 验证导入结果
+ mysql> select * from person;
++----+------+------+--------+
+| id | name | city | salary |
++----+------+------+--------+
+| 15 | 张三 | 北京 |   3000 |
+| 16 | 李四 | 杭州 |   4000 |
+| 17 | 王五 | /N   |   4500 |
+| 18 | 小明 | 天津 |      0 |
++----+------+------+--------+
+
+4 如果导入失败就清空数据 重新实验
+
+delete from 表名;
+truncate table 表名;
+
+不带where参数的delete语句可以删除mysql表中所有内容，使用truncate table也可以清空mysql表中所有内容。
+效率上truncate比delete快，但truncate删除后不记录mysql日志，不可以恢复数据。
+delete的效果有点像将mysql表中所有记录一条一条删除到删完，
+而truncate相当于保留mysql表的结构，重新创建了这个表，所有的状态都相当于新表。
+
+

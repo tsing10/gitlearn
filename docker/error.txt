@@ -1,0 +1,17 @@
+
+[root@localhost ~]# docker run hello-world
+
+docker: Error response from daemon: OCI runtime create failed: container_linux.go:344: starting container process caused "process_linux.go:297: getting the final child's pid from pipe caused \"read init-p: connection reset by peer\"": unknown.
+ERRO[0001] error waiting for container: context canceled 
+
+解决：晚上在打开电脑 运行docker ps -a
+[root@localhost ~]# docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+fc108fd4ea2b        hello-world         "/hello"            5 hours ago         Created                                 relaxed_cartwright
+3a528a86872e        hello-world         "/hello"            5 hours ago         Created                                 recursing_kirch
+960b8336e0eb        hello-world         "/hello"            6 hours ago         Created                                 awesome_curran
+
+原来hello world 都已经成功了 但是当时明明有错误 不能运行的
+又运行了一遍
+docker run hello-world
+成功了

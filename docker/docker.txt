@@ -1,0 +1,137 @@
+author：tsing
+date：2018/7/20
+
+什么是docker
+	Docker是一个开源的引擎，可以轻松的为任何应用创建一个轻量级的、可移植的、自给自足的容器。开发者在笔记本上编译测试通过的容器可以批量地在生产环境中部署，包括VMs（虚拟机）、bare metal、OpenStack 集群和其他的基础应用平台。
+	
+---------------安装docker---------------
+
+.....
+
+--------------使用docker----------------
+
+	
+‘#’ 为以root用户打开的终端命令行的提示符	
+
+# docker version 版本
+
+# docker search tutorial 搜索可用docker镜像
+
+# docker pull learn/tutorial 下载容器镜像
+
+# docker run learn/tutorial echo 在docker容器中运行hello world! 
+
+# docker run learn/tutorial apt-get install -y ping 在容器中安装新的程序 ping
+
+# docker ps -l	查询需要保存的容器的ID
+
+# docker commit 058 learn/ping  保存容器的改变 容器id仅需输入前3 4位
+
+# docker run learn/ping ping www.baidu.com 运行新的镜像
+
+# docker ps		查看正在运行的容器
+
+# docker ps -a 	查看所有的容器列表
+	
+# docker ps -l 	显示最近一个容器
+
+# docker images 列出所有安装过的镜像
+
+--------------------提交到docker hub----------------
+
+在网页上注册一个账号 https://hub.docker.com/ 用户名tsing10
+
+在网页上完成创建一个repo ： tsingdocker
+
+# docker login -u tsing10 -p ***** 	本地登录到docker hub *****代替为自己的docker hub密码
+
+# docker tag learn/ping tsing10/tsingdocker:tsingtag  	打个tag 
+
+# docker push tsing10/tsingdocker:tsingtag	提交
+
+
+
+
+# docker run centos echo 'hello world' 使用centos镜像输出hello world
+
+# docker inspect 镜像id	或者名字	查看镜像详细信息
+
+# docker rm 容器名	删除容器
+
+# docker start -i 容器名	启动已经停止的容器
+
+# docker run  --name=centos-img -i -t centos /bin/bash	重名
+
+# 守护进程：退出后进程后台运行 ctrl + p q
+
+-------------安装Nginx--------------
+
+第一步 - 添加Nginx存储库
+
+要添加CentOS 7 EPEL仓库，请打开终端并使用以下命令：
+
+sudo yum install epel-release
+
+第二步 - 安装Nginx
+
+现在Nginx存储库已经安装在您的服务器上，使用以下yum命令安装Nginx ：
+
+sudo yum install nginx
+
+在对提示回答yes后，Nginx将在服务器上完成安装。
+第三步 - 启动Nginx
+
+Nginx不会自行启动。要运行Nginx，请输入：
+
+sudo systemctl start nginx
+--------------------- 
+作者：oldguncm 
+来源：CSDN 
+原文：https://blog.csdn.net/oldguncm/article/details/78855000 
+版权声明：本文为博主原创文章，转载请附上博文链接！
+
+
+-----------------在容器中部署静态网页-----------------------------
+
+1 创建一个开放80端口的容器
+	docker run -p 80 --name web -i -t centos /bin/bash 创建一个开放80端口的容器
+
+2  安装Nginx
+	
+	yum install -y epel-release	添加CentOS 7 EPEL仓库
+	yum install -y nginx			安装Nginx
+
+3 安装vim 
+	yum install -y vim
+
+4 编辑index.html
+
+.......
+
+6 退出docker 容器 ctrl + p q 使他成为后台运行的进程
+
+7 docker port web 查询容器的端口
+
+8 curl http://127.0.0.1:32769 端口为上一步查询到的端口
+
+9 也可以使用浏览器打开
+
+	docker inspect web | grep IPAddress	查看web容器的ip 关闭容器再开启容器的时候ip地址会变化
+	
+	浏览器输入 http://容器IPAddress回车
+	
+
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+

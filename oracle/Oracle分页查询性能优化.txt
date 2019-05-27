@@ -1,0 +1,131 @@
+Oracle分页查询性能优化
+2016年09月19日 16:10:00 sunansheng 阅读数：16506
+版权声明：http://www.sunansheng.com/ https://blog.csdn.net/sunansheng/article/details/52586697
+
+对于数据库中表的数据的 Web 显示，如果没有展示顺序的需要，而且因为满足条件的记录如 此之多，就不得不对数据进行分页处理。常常用户并不是对所有数据都感兴趣的，或者大部分情 况下，他们只看前几页。 
+
+通常有以下两种分页技术可供选择。 
+
+	
+Select * from (
+Select rownum rn,t.* from table t)
+Where rn>&minnum and rn<=&maxnum
+或者
+Select * from (
+Select rownum rn,t.* from table t rownum<=&maxnum)
+Where rn>&minnum
+
+看似相似的分页语句，在响应速度上其实有很大的差别。来看一个测试过程，首先创建一个测试表。 
+
+	
+SQL>create table test as select * from dba_objects;
+
+并反复地插入相同数据。 
+
+	
+SQL>insert into test select * from test;
+
+最后，查询该表，可以看到该表的记录数约为 80 万条。 
+
+	
+SQL> select count(*) from test
+  COUNT(*)
+----------
+    831104
+
+现在分别采用两种分页方式，在第一种分页方式中： 
+
+
+	
+SQL> select * from (
+  2  select rownum rn,t.* from test t)
+  3  where rn>0 and rn <=50;
+   
+已选择50行。
+已用时间:  00: 00: 01.03
+   
+Execution Plan
+----------------------------------------------------------
+   0      SELECT STATEMENT Optimizer=CHOOSE (Cost=10 Card=65 Bytes=12350)
+   1    0   VIEW (Cost=10 Card=65 Bytes=12350)
+   2    1     COUNT
+   3    2       TABLE ACCESS (FULL) OF 'TEST' (Cost=10 Card=65 Bytes=5590)
+   
+Statistics
+----------------------------------------------------------
+          0  recursive calls
+          0  db block gets
+      10246  consistent gets
+          0  physical reads
+          0  redo size
+          ……
+
+可以看到，这种方式查询第一页的一致性读有 10246 个，结果满足了，但是效率是很差的，如果采用第二种方式： 
+	
+SQL> select * from (
+  2  select rownum rn,t.* from test t
+  3  where rownum <=50)
+  4  where rn>0;
+  
+已选择50行。
+已用时间:  00: 00: 01.00
+  
+Execution Plan
+----------------------------------------------------------
+   0      SELECT STATEMENT Optimizer=CHOOSE (Cost=10 Card=50 Bytes=9500)
+   1    0   VIEW (Cost=10 Card=50 Bytes=9500)
+   2    1     COUNT (STOPKEY)
+   3    2       TABLE ACCESS (FULL) OF 'TEST' (Cost=10 Card=65 Bytes=5590)
+  
+Statistics
+----------------------------------------------------------
+          0  recursive calls
+          0  db block gets
+         82  consistent gets
+          0  physical reads
+          0  redo size
+          ……
+
+得到了同样的结果，一致性读只有 82 个，从以上的例子可以看到，通过把 rownum 引入到第 二层，却得到了一个完全不一样的执行计划，注意在执行计划中的 stopkey，它是 8i 引入的新操 作，这种操作专门为提取 Top n 的需求做了优化。 
+
+从上面的例子可以再想到，因为 stopkey 的功能影响到了分页的一致性读的多少，会不会越往后翻页速度就越慢呢？事实也的确如此，例如： 
+
+	
+SQL> select * from (
+  2  select rownum rn,t.* from test t
+  3  where rownum <=10000)
+  4  where rn>9950;
+  
+已选择50行。
+已用时间:  00: 00: 01.01
+  
+Statistics
+----------------------------------------------------------
+          0  recursive calls
+          0  db block gets
+       2616  consistent gets
+          0  physical reads
+          0  redo size
+         ……
+
+选择靠后一点的数据时，逻辑读开始变大，当选择到最后几页时，一致性读已经与上面的相似了。 
+
+	
+SQL> select * from (
+  2  select rownum rn,t.* from test t
+  3  where rownum <=800000)
+  4  where rn>799950;
+  
+已选择50行。
+已用时间:  00: 00: 01.03
+  
+Statistics
+----------------------------------------------------------
+          0  recursive calls
+          0  db block gets
+      10242  consistent gets
+          0  physical reads
+          0  redo size
+          ……
+
+不过，所幸的是，大部分的用户只看开始 5%的数据，而没有兴趣看最后面的数据，通过第二种改良的分页技术，可以方便快速地显示前面的数据，而且不会让用户感觉到慢。

@@ -1,0 +1,50 @@
+第一坑：
+ Failed to execute goal on project jeesns-service: Could not resolve dependencies for project com.lxinet:jeesns-service:jar:1.4.2: Failure to find com.lxinet:jeesns-core:jar:1.4.2 in https://repo.maven.apache.org/maven2 was cached in the local repository, resolution will not be reattempted until the update interval of central has elapsed or updates are forced -> [Help 1]
+[ERROR] 
+jeesns有一个jar包不是存在于远程仓库中的 需要自己导入到本地仓库 pom文件才能找到他，但是eclipse的maven插件没有办法运行命令行 需要自己
+ 1 下载解压本地maven安装包
+ 2 bin文件加环境变量path ,
+ 3 cmd运行命令mvn install:install-file -Dfile=D:\jeesns-core.jar -DgroupId=com.lxinet -DartifactId=jeesns-core -Dversion=1.4.2 -Dpackaging=jar
+ 
+ --ok
+ 
+ 坑二：maven build 失败
+ 
+  Failed to execute goal on project jeesns-web: Could not resolve dependencies for project com.lxinet:jeesns-web:war:1.4.2: Failure to find com.lxinet:jeesns-service:jar:1.4.2 in https://repo.maven.apache.org/maven2 was cached in the local repository, resolution will not be reattempted until the update interval of central has elapsed or updates are forced -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/DependencyResolutionException
+
+解决：删除本地库com.lxinet:jeesns-web:war:1.4.2所在文件夹 重新 maven build
+
+ERROR [com.alibaba.druid.pool.DruidDataSource] - init datasource error, url: jdbc:mysql://localhost:3306/jeesns?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
+com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException: Could not create connection to database server.
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	....
+	Caused by: java.lang.NullPointerException
+	....
+原因：mysql jdbc驱动与数据库版本不匹配
+解决：去maven库官网 https://mvnrepository.com/artifact/mysql/mysql-connector-java
+		查找相对应的驱动 配置pom文件即可
+ 
+ 
+ [localhost-startStop-1] ERROR [com.alibaba.druid.pool.DruidDataSource] - init datasource error, url: jdbc:mysql://localhost:3306/jeesns?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
+java.sql.SQLException: The server time zone value '???ú±ê×??±??' is unrecognized or represents more than one time zone. You must configure either the server or JDBC driver (via the serverTimezone configuration property) to use a more specifc time zone value if you want to utilize time zone support.
+....	 
+by: com.mysql.cj.exceptions.InvalidConnectionAttributeException: The server time zone value '???ú±ê×??±??' is unrecognized or represents more than one time zone. You must configure either the server or JDBC driver (via the serverTimezone configuration property) to use a more specifc time zone value if you want to utilize time zone support.
+原因：
+解决：在url中"jdbc.url=jdbc:mysql://localhost:3306/jeesns?characterEncoding=utf8&serverTimezone=GMT%2B8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true"
+
+	中加上&serverTimezone=GMT%2B8，注意：GMT%2B8这是GMT+8时区
+	
+坑三	404
+	localhost:8080 无法访问 404
+	原因：web root不对
+	解决：修改context web  为 /
+		右键 jeesns-web项目》 properties 》web project settings》context root
+		
+		
+		

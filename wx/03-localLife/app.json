@@ -1,0 +1,39 @@
+{
+  "pages": [
+    "pages/home/home",
+    "pages/message/message",
+    "pages/me/me",
+    "pages/contact/contact",
+    "pages/shoplist/shoplist"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "本地生活",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "list": [{
+      "pagePath": "pages/home/home",
+      "text": "home",
+      "iconPath": "assets/tabs/home.png",
+      "selectedIconPath": "assets/tabs/home-active.png"
+    },{
+      "pagePath": "pages/message/message",
+      "text": "message",
+      "iconPath": "assets/tabs/message.png",
+      "selectedIconPath": "assets/tabs/message-active.png"
+    },{
+      "pagePath": "pages/me/me",
+      "text": "me",
+      "iconPath": "assets/tabs/profile.png",
+      "selectedIconPath": "assets/tabs/profile-active.png"
+    },{
+      "pagePath": "pages/contact/contact",
+      "text": "contact",
+      "iconPath": "assets/tabs/contact.png",
+      "selectedIconPath": "assets/tabs/contact-active.png"
+    }]
+  },
+  "sitemapLocation": "sitemap.json"
+}

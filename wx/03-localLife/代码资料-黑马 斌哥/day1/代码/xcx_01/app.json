@@ -1,0 +1,29 @@
+{
+  "pages": [
+    "pages/home/home",
+    "pages/main/main",
+    "pages/test/test"
+  ],
+  "window": {
+    "backgroundTextStyle": "dark",
+    "backgroundColor": "#eeeeee",
+    "navigationBarBackgroundColor": "#2b4b6b",
+    "navigationBarTitleText": "黑马小程序",
+    "navigationBarTextStyle": "white",
+    "enablePullDownRefresh": true
+  },
+  "tabBar": {
+    "list": [{
+      "pagePath": "pages/main/main",
+      "text": "主页",
+      "iconPath": "/images/tabs/home.png",
+      "selectedIconPath": "/images/tabs/home-active.png"
+    },{
+      "pagePath": "pages/home/home",
+      "text": "Home",
+      "iconPath": "/images/tabs/message.png",
+      "selectedIconPath": "/images/tabs/message-active.png"
+    }]
+  },
+  "sitemapLocation": "sitemap.json"
+}

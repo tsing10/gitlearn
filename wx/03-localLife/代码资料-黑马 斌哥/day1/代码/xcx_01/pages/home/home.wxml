@@ -1,0 +1,33 @@
+<!--pages/home/home.wxml-->
+<text>{{info}}</text>
+<view id="{{id}}">1234</view>
+<view>{{boo ? '条件为真' : '条件为假'}}</view>
+
+<navigator url=''></navigator>
+
+<button type="primary" bindtap='btnHandler1'>按钮</button>
+
+<!-- 一般情况下，key的值，直接使用 index 就行 -->
+<view wx:for="{{array}}" wx:key="index">
+  索引是:{{index}} ---- 对应的值是：{{item.msg}}
+</view>
+
+<image src='/images/tabs/home.png' class='img1'></image>
+
+<!--indicator-dots 是否展示小圆点-->
+<!--circular       是否衔接轮播-->
+<!--autoplay       是否自动轮播-->
+<!--interval       自动轮播的间隔，单位是毫秒，默认每 5000 毫秒轮播一次-->
+<swiper indicator-dots circular autoplay interval='2000'>
+  <swiper-item>轮播图1</swiper-item>
+  <swiper-item>轮播图2</swiper-item>
+  <swiper-item>轮播图3</swiper-item>
+</swiper>
+
+<navigator url="/pages/test/test?id=3">跳转到 Test 页面</navigator>
+
+<button bindtap='showLoading'>展示loading</button>
+<button bindtap='hideLoading'>隐藏loading</button>
+
+<button bindtap='getInfo'>发起Get请求</button>
+<button bindtap='postInfo'>发起Post请求</button>
